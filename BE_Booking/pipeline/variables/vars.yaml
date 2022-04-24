@@ -1,0 +1,9 @@
+variables:
+  SERVICE_NAME: event-viewer
+  ICON_NAME: $(SERVICE_NAME)
+  CONTAINER_TAG: $(Build.BuildId)
+  NAMESPACE: $(SERVICE_NAME)
+  CONTAINER_NAME: itsm-$(SERVICE_NAME)
+  DOCKER_FILE: Dockerfile
+  SERVICE_TYPE: "webclient"
+  SERVICE_VERSIONING: false

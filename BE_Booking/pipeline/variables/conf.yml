@@ -1,0 +1,7 @@
+variables:
+  VERSIONING: true
+  AGENT_POOL_DEV: "selictl"
+  AGENT_POOL_CLOUD: "cloudPool"
+  CONTAINER_REGISTRY_URL: selise.azurecr.io
+  CONTAINER_REGISTRY_SC: dockerRegistryServiceConnection
+  VM_IMAGE: "ubuntu-16.04"

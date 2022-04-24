@@ -1,0 +1,7 @@
+steps:
+  - script: |
+      cd /home/selictl/selictl
+      selictl -e $(repoEnv) --type $(serviceType) -r $(CONTAINER_REGISTRY_URL) --ns $(NAMESPACE) -n $(containerName) -t $(CONTAINER_TAG) -v $(serviceVersioning) -i $(ICON_NAME)
+    displayName: Deploy with Helm Template
+
+      

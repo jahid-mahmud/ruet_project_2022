@@ -1,0 +1,96 @@
+<div *ngIf="isLoading">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div fxLayout="row" fxLayoutAlign="center center" class='header'>
+  DEVOPS ALL EVENTS
+</div>
+<div fxLayout="row" fxLayoutAlign="end center" class="header-button">
+  <button mat-raised-button (click)="logOut()">Logout</button>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="32px">
+  <!-- <mat-form-field>
+    <mat-select placeholder="Namespace" (selectionChange)="onNameSpaceSelected($event.value)">
+        <mat-option *ngFor="let namespace of nameSpaces" [value]="namespace.value">
+            {{ namespace.viewValue }}
+        </mat-option>
+    </mat-select>
+  </mat-form-field> -->
+
+  
+
+  <form [formGroup]="searchForm">
+      <mat-form-field class="example-full-width" appearance="fill" >
+        <mat-label>Search by namespace</mat-label>
+        <input matInput formControlName="namespace" autocomplete="off" >
+      </mat-form-field>
+  </form>
+
+  <mat-form-field>
+    <mat-select placeholder="Node" (selectionChange)="onNodeSelected($event.value)">
+      <mat-option *ngFor="let node of nodes" [value]="node.value">
+        {{ node.viewValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+</div>
+
+
+<div *ngIf="!isLoading && !errors.length" style="margin-top: 200px;" fxLayout="column" fxLayoutAlign="center center">
+  <img src="../../assets/images/no-data.jpg">
+  <h4>
+    No Data Found
+  </h4>
+</div>
+
+
+
+<table *ngIf="!isLoading && errors.length" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+
+  <ng-container matColumnDef="namespace">
+    <th mat-header-cell *matHeaderCellDef> Namespace </th>
+    <td mat-cell *matCellDef="let element"> {{element.namespace}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Podname </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <!-- Reason Column -->
+  <ng-container matColumnDef="reason">
+    <th mat-header-cell *matHeaderCellDef> Reason </th>
+    <td mat-cell *matCellDef="let element"> {{element.reason}} </td>
+  </ng-container>
+
+  <!-- source Column -->
+  <ng-container matColumnDef="source">
+    <th mat-header-cell *matHeaderCellDef> Node </th>
+    <td mat-cell *matCellDef="let element">
+      <div *ngIf="element.source.component">
+        {{element.source.component}}:{{element.source.host}}
+      </div>
+      <div *ngIf="!element.source.component">
+        N/A
+      </div>
+    </td>
+  </ng-container>
+
+  <!-- Reason Column -->
+  <ng-container matColumnDef="time">
+    <th mat-header-cell *matHeaderCellDef> Time </th>
+    <td mat-cell *matCellDef="let element"> {{element.createDate | date:'short'}} </td>
+  </ng-container>
+
+  <!-- Message Column -->
+  <ng-container matColumnDef="message">
+    <th mat-header-cell *matHeaderCellDef> Message </th>
+    <td mat-cell *matCellDef="let element" class="message"> {{element.message}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

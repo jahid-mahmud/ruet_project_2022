@@ -1,0 +1,34 @@
+jobs:
+- job: HelmGenerateAndDeployDev
+  displayName: Helm Generate and Deploy (DEV)
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/dev'))
+  pool: $(AGENT_POOL_DEV)
+  variables:
+    repoEnv: dev
+    serviceType: $(SERVICE_TYPE)
+    containerName: $(CONTAINER_NAME)
+    serviceVersioning: $(SERVICE_VERSIONING)
+  steps:
+  - template: /pipeline/templates/deploy-k8s.yml
+- job: HelmGenerateAndDeployStage
+  displayName: Helm Generate and Deploy (STG)
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'))
+  pool: $(AGENT_POOL_DEV)
+  variables:
+    repoEnv: stg
+    serviceType: $(SERVICE_TYPE)
+    containerName: $(CONTAINER_NAME)
+    serviceVersioning: $(SERVICE_VERSIONING)
+  steps:
+  - template: /pipeline/templates/deploy-k8s.yml
+- job: HelmGenerateAndDeployProd
+  displayName: Helm Generate and Deploy (PROD)
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/master'))
+  pool: $(AGENT_POOL_DEV)
+  variables:
+    repoEnv: prod
+    serviceType: $(SERVICE_TYPE)
+    containerName: $(CONTAINER_NAME)
+    serviceVersioning: $(SERVICE_VERSIONING)
+  steps:
+  - template: /pipeline/templates/deploy-k8s.yml

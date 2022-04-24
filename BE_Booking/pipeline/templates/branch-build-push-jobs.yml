@@ -1,0 +1,31 @@
+jobs:
+- job: BuildndPushDev
+  displayName: Build and Push (DEV)
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/dev'))
+  pool: $(AGENT_POOL_CLOUD)
+  variables:
+    repoEnv: dev
+    containerName: $(CONTAINER_NAME)
+    dockerFile: $(DOCKER_FILE)
+  steps:
+  - template: /pipeline/templates/docker-build.yml
+- job: BuildndPushStage
+  displayName: Build and Push (STG)
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/release'))
+  pool: $(AGENT_POOL_CLOUD)
+  variables:
+    repoEnv: stg
+    containerName: $(CONTAINER_NAME)
+    dockerFile: $(DOCKER_FILE)
+  steps:
+  - template: /pipeline/templates/docker-build.yml
+- job: BuildndPushProd
+  displayName: Build and Push (PROD)
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/heads/master'))
+  pool: $(AGENT_POOL_CLOUD)
+  variables:
+    repoEnv: prod
+    containerName: $(CONTAINER_NAME)
+    dockerFile: $(DOCKER_FILE)
+  steps:
+  - template: /pipeline/templates/docker-build.yml
